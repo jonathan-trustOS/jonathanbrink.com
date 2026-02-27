@@ -7,7 +7,7 @@ export default function ScrollReveal() {
     let rafId: number;
 
     const reveal = () => {
-      const viewBottom = window.scrollY + window.innerHeight + 120;
+      const viewBottom = window.scrollY + window.innerHeight + 400;
       document.querySelectorAll(".fade-up:not(.visible)").forEach((el) => {
         const elTop = (el as HTMLElement).offsetTop;
         if (elTop < viewBottom) {
