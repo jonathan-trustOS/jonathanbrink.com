@@ -13,12 +13,23 @@ export default function ScrollReveal() {
           }
         });
       },
-      { threshold: 0.01, rootMargin: "0px 0px 80px 0px" }
+      { threshold: 0, rootMargin: "0px 0px 200px 0px" }
     );
 
-    document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+    const observe = () => {
+      document
+        .querySelectorAll(".fade-up:not(.visible)")
+        .forEach((el) => observer.observe(el));
+    };
 
-    return () => observer.disconnect();
+    // Observe immediately + after hydration settles
+    observe();
+    const t = setTimeout(observe, 500);
+
+    return () => {
+      clearTimeout(t);
+      observer.disconnect();
+    };
   }, []);
 
   return null;
