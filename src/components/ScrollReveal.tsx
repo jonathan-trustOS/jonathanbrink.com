@@ -4,26 +4,37 @@ import { useEffect } from "react";
 
 export default function ScrollReveal() {
   useEffect(() => {
-    // Fallback: on scroll, reveal any .fade-up element whose top is above viewport bottom
-    const revealOnScroll = () => {
-      const viewBottom = window.scrollY + window.innerHeight + 100;
+    let rafId: number;
+
+    const reveal = () => {
+      const viewBottom = window.scrollY + window.innerHeight + 120;
       document.querySelectorAll(".fade-up:not(.visible)").forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        const elTop = rect.top + window.scrollY;
+        const elTop = (el as HTMLElement).offsetTop;
         if (elTop < viewBottom) {
           el.classList.add("visible");
         }
       });
     };
 
-    // Run immediately, after hydration, and on every scroll
-    revealOnScroll();
-    const t = setTimeout(revealOnScroll, 300);
-    window.addEventListener("scroll", revealOnScroll, { passive: true });
+    // Run on every frame until all are revealed, then stop
+    const tick = () => {
+      reveal();
+      if (document.querySelectorAll(".fade-up:not(.visible)").length > 0) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    // Start after a brief delay for hydration
+    const t = setTimeout(() => {
+      tick();
+      // Also listen for scroll to catch lazy-loaded or late elements
+      window.addEventListener("scroll", reveal, { passive: true });
+    }, 100);
 
     return () => {
       clearTimeout(t);
-      window.removeEventListener("scroll", revealOnScroll);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", reveal);
     };
   }, []);
 
