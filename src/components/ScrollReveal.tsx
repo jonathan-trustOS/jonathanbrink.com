@@ -4,9 +4,6 @@ import { useEffect } from "react";
 
 export default function ScrollReveal() {
   useEffect(() => {
-    let rafId: number;
-    let running = true;
-
     const reveal = () => {
       const threshold = window.innerHeight + 200;
       document.querySelectorAll(".fade-up:not(.visible)").forEach((el) => {
@@ -16,27 +13,21 @@ export default function ScrollReveal() {
       });
     };
 
-    const tick = () => {
-      if (!running) return;
-      reveal();
-      rafId = requestAnimationFrame(tick);
-    };
+    // Run immediately
+    reveal();
 
-    // Start polling immediately
-    rafId = requestAnimationFrame(tick);
+    // Poll with setInterval (works even in background tabs unlike rAF)
+    const interval = setInterval(reveal, 100);
 
-    // Stop polling after 10 seconds (all elements should be revealed by real scrolling)
-    const stopTimer = setTimeout(() => {
-      running = false;
-      cancelAnimationFrame(rafId);
-      // Switch to scroll-only after rAF stops
-      window.addEventListener("scroll", reveal, { passive: true });
-    }, 10000);
+    // Also run on scroll for responsiveness
+    window.addEventListener("scroll", reveal, { passive: true });
+
+    // Stop polling after 10s
+    const stopTimer = setTimeout(() => clearInterval(interval), 10000);
 
     return () => {
-      running = false;
+      clearInterval(interval);
       clearTimeout(stopTimer);
-      cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", reveal);
     };
   }, []);
