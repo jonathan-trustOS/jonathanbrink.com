@@ -4,31 +4,26 @@ import { useEffect } from "react";
 
 export default function ScrollReveal() {
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("visible");
-            observer.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0, rootMargin: "0px 0px 200px 0px" }
-    );
-
-    const observe = () => {
-      document
-        .querySelectorAll(".fade-up:not(.visible)")
-        .forEach((el) => observer.observe(el));
+    // Fallback: on scroll, reveal any .fade-up element whose top is above viewport bottom
+    const revealOnScroll = () => {
+      const viewBottom = window.scrollY + window.innerHeight + 100;
+      document.querySelectorAll(".fade-up:not(.visible)").forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const elTop = rect.top + window.scrollY;
+        if (elTop < viewBottom) {
+          el.classList.add("visible");
+        }
+      });
     };
 
-    // Observe immediately + after hydration settles
-    observe();
-    const t = setTimeout(observe, 500);
+    // Run immediately, after hydration, and on every scroll
+    revealOnScroll();
+    const t = setTimeout(revealOnScroll, 300);
+    window.addEventListener("scroll", revealOnScroll, { passive: true });
 
     return () => {
       clearTimeout(t);
-      observer.disconnect();
+      window.removeEventListener("scroll", revealOnScroll);
     };
   }, []);
 
