@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: #f8f7f4;
+  --color-surface: #ffffff;
+  --color-surface2: #f1f0ed;
+  --color-border: #e5e3de;
+  --color-border2: #d4d1ca;
+  --color-violet: #6d28d9;
+  --color-violet-dim: #6d28d910;
+  --color-violet-hover: #5b21b6;
+  --color-cyan: #0891b2;
+  --color-green: #059669;
+  --color-amber: #d97706;
+  --color-text: #1a1814;
+  --color-dim: #4a4740;
+  --color-muted: #8a8680;
+
+  --font-display: "Bebas Neue", sans-serif;
+  --font-accent: "Instrument Serif", serif;
+  --font-mono: "Fira Code", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+}
+
+/* Hero carousel animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Ticker animation */
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Fade-up animation for scroll reveals */
+@layer base {
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-up-delay-1 {
+    transition-delay: 0.1s;
+  }
+
+  .fade-up-delay-2 {
+    transition-delay: 0.2s;
+  }
+
+  .fade-up-delay-3 {
+    transition-delay: 0.3s;
+  }
+}
