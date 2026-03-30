@@ -6,7 +6,7 @@ const links = [
   { label: "Tools", href: "/tools" },
   { label: "Writing", href: "/writing" },
   { label: "About", href: "/about" },
-  { label: "Contact", href: "mailto:hello@jonathanbrink.com" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Footer() {

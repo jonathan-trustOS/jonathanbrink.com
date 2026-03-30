@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import ContactForm from "@/components/ContactForm";
 
 export default function ContactPage() {
   return (
@@ -21,14 +22,10 @@ export default function ContactPage() {
           tools? Just want to say hi? Drop me a line.
         </p>
 
-        <div className="max-w-lg rounded-2xl border border-border bg-surface p-10">
-          <a
-            href="mailto:hello@jonathanbrink.com"
-            className="mb-8 inline-flex items-center gap-3 text-xl font-semibold text-violet no-underline transition-colors hover:text-violet-hover"
-          >
-            hello@jonathanbrink.com ↗
-          </a>
-          <div className="space-y-4 border-t border-border pt-8">
+        <div className="grid max-w-3xl gap-10 lg:grid-cols-[1fr_280px]">
+          <ContactForm />
+
+          <div className="space-y-6 rounded-2xl border border-border bg-surface p-8">
             <div>
               <div className="font-mono text-[11px] uppercase tracking-[2px] text-muted">
                 Current Role
