@@ -29,6 +29,12 @@ export default function Nav() {
           Tools
         </Link>
         <Link
+          href="/workshops"
+          className="font-mono text-xs uppercase tracking-[1px] text-muted no-underline transition-colors duration-150 hover:text-text"
+        >
+          Workshops
+        </Link>
+        <Link
           href="/writing"
           className="font-mono text-xs uppercase tracking-[1px] text-muted no-underline transition-colors duration-150 hover:text-text"
         >
