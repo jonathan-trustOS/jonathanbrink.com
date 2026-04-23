@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { projects } from "@/data/projects";
@@ -67,27 +68,29 @@ export default function WorkPage() {
                   ↗
                 </div>
               </div>
-              <div className="flex aspect-video items-center justify-center overflow-hidden rounded-[10px] border border-border bg-[#07070f]">
-                <div className="relative z-[2] w-[88%] p-4">
-                  <div className="mb-2 font-mono text-[9px] uppercase tracking-[2px] text-amber">
-                    Community-sourced UX Research
-                  </div>
-                  <div className="mb-3 font-display text-xl leading-[1.1] text-[#e2e8f0]">
-                    Who actually uses these products,{" "}
-                    <span className="font-accent italic text-[#f59e0b]">
-                      and what made them stay.
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-1.5">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="h-12 rounded-md border border-[#f59e0b22] bg-[#1a1200]"
-                      />
-                    ))}
+              {featured.heroImage ? (
+                <div className="relative aspect-video overflow-hidden rounded-[10px] border border-border bg-[#07070f]">
+                  <Image
+                    src={featured.heroImage}
+                    alt={`${featured.title} — hero`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              ) : (
+                <div className="flex aspect-video items-center justify-center overflow-hidden rounded-[10px] border border-border bg-[#07070f]">
+                  <div className="relative z-[2] w-[88%] p-4">
+                    <div className="mb-3 font-display text-xl leading-[1.1] text-[#e2e8f0]">
+                      {featured.title}
+                    </div>
+                    <div className="font-mono text-[10px] uppercase tracking-[2px] text-muted">
+                      {featured.tag}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </Link>
           )}
 

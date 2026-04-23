@@ -21,6 +21,7 @@ export interface Project {
   pills: string[];
   url?: string;
   featured?: boolean;
+  heroImage?: string;
   category: "product" | "design";
   role?: string;
   timeline?: string;
@@ -39,7 +40,6 @@ export const projects: Project[] = [
     tagBg: "#d9770610",
     pills: ["Next.js", "Community-sourced", "200+ personas"],
     url: "https://persona-library.com",
-    featured: true,
     category: "product",
     role: "Designer & Builder",
     timeline: "2025",
@@ -75,6 +75,8 @@ export const projects: Project[] = [
     tagBg: "#0891b212",
     pills: ["SLM", "Qwen 7B + LoRA", "TrustOS"],
     url: "https://elleapp.org",
+    featured: true,
+    heroImage: "/images/work/elle/homepage.png",
     category: "product",
     role: "Creator & Architect",
     timeline: "2026 – Present",
@@ -83,6 +85,9 @@ export const projects: Project[] = [
       {
         heading: "The Thesis",
         body: "Most AI is designed to help, solve, and produce. Elle is designed to reflect. She is a small language model — not an assistant, not a coach in the traditional sense — trained to be the most precise mirror a person has ever had access to.\n\nThe thesis is simple: accurate reflection is the outcome. A person who sees themselves clearly doesn't need advice. They need a mirror that doesn't distort. Elle is built to be that.",
+        images: [
+          { src: "/images/work/elle/homepage.png", alt: "Elle homepage — Become the person you know you already are", caption: "elleapp.org — the first confidant and coach that helps you uncover the true you" },
+        ],
       },
       {
         heading: "What It Is",
