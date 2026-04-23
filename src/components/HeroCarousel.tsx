@@ -16,6 +16,16 @@ interface CarouselItem {
 
 const items: CarouselItem[] = [
   {
+    title: "Elle",
+    desc: "A purpose-built small language model trained to be a mirror, not an assistant. Part of TrustOS — AI that reflects, not directs.",
+    tag: "SLM · AI",
+    tagColor: "var(--color-cyan)",
+    tagBg: "#0891b212",
+    href: "/work/elle",
+    cta: "View project",
+    pills: ["SLM", "Qwen 7B + LoRA", "TrustOS"],
+  },
+  {
     title: "Persona Library",
     desc: "Open-source UX research platform. 200+ community-validated personas for the tools that run modern work.",
     tag: "Community Platform",
