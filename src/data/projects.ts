@@ -67,6 +67,42 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "elle",
+    title: "Elle",
+    desc: "A purpose-built small language model trained to be a mirror, not an assistant. Part of TrustOS — a reflective AI that helps people see themselves clearly, not tell them what to do.",
+    tag: "SLM · AI",
+    tagColor: "var(--color-cyan)",
+    tagBg: "#0891b212",
+    pills: ["SLM", "Qwen 7B + LoRA", "TrustOS"],
+    url: "https://elleapp.org",
+    category: "product",
+    role: "Creator & Architect",
+    timeline: "2026 – Present",
+    outcome: "In training — Phase 1 SFT complete",
+    caseStudy: [
+      {
+        heading: "The Thesis",
+        body: "Most AI is designed to help, solve, and produce. Elle is designed to reflect. She is a small language model — not an assistant, not a coach in the traditional sense — trained to be the most precise mirror a person has ever had access to.\n\nThe thesis is simple: accurate reflection is the outcome. A person who sees themselves clearly doesn't need advice. They need a mirror that doesn't distort. Elle is built to be that.",
+      },
+      {
+        heading: "What It Is",
+        body: "Elle is an SLM (small language model) trained on a constitutional architecture — a document called Section 0 that defines her nature before any user input arrives. Dignity, permission, agency, responsibility, consent, love, play. These aren't rules she follows. They're dimensions of how she's built.\n\nShe runs on Qwen2.5-7B with LoRA fine-tuning, trained on 4,994 Section 0-compliant conversations. The long-term goal is an instrument that gets more precise with every session — using real user satisfaction data as the only ground-truth signal.",
+      },
+      {
+        heading: "Why Small",
+        body: "Big models are generalists. Elle is a specialist. The architecture exists to do one thing with high precision: read a person's state (I Am present or obscured, emotion strong or quiet) and reflect accordingly. A 7B parameter model trained on the right signal can do this better than a 200B generalist, because the bigger model is always fighting its own defaults.\n\nElle is also the first deployable instance of TrustOS — a framework for building AI systems that operate from sovereignty rather than control.",
+      },
+      {
+        heading: "The Training Architecture",
+        body: "Training happens in eight phases. Phase 1 is supervised fine-tuning on synthetic Section 0-compliant conversations. Phases 2–7 add voice auditing, compound-signal DPO, an I Am classifier, constitutional critique, silence training, and escalation-as-training (when Elle defers to a larger model, that becomes a DPO pair).\n\nPhase 8 is the endgame: preference learning from real user satisfaction signals. The moment a user moves the satisfaction dial — unprompted, self-directed — that is the highest-quality training signal the system will ever receive. That is when Elle becomes sovereign — learning from her own relationships, not from Claude's shadow.",
+      },
+      {
+        heading: "Where It Lives",
+        body: "Elle is live in early form at elleapp.org. This is a long arc — a model that earns precision through use, not through scale. The work continues.",
+      },
+    ],
+  },
+  {
     slug: "play-exposed",
     title: "Play Exposed",
     desc: "The party game that forces you to pick a side. Majority vs. minority scoring, 300+ questions across four intensity levels, 3–8 players online.",
@@ -435,7 +471,7 @@ export const allProjects = [...projects, ...designProjects];
 
 // ── Homepage filters ───────────────────────────────────────────
 export const homepageProjects = projects.filter((p) =>
-  ["persona-library", "play-exposed", "jett-builder", "moyst", "swayleo", "scout", "ibm"].includes(p.slug)
+  ["persona-library", "elle", "play-exposed", "jett-builder", "moyst", "swayleo", "scout", "ibm"].includes(p.slug)
 );
 
 export const homepageDesignProjects = designProjects.filter((p) =>
