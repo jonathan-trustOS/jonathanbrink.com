@@ -9,6 +9,32 @@ export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const project = projects.find((p) => p.slug === slug);
+  if (!project) return {};
+  const image =
+    project.heroImage ?? project.caseStudy?.flatMap((s) => s.images ?? [])[0]?.src;
+  return {
+    title: project.title,
+    description: project.desc,
+    openGraph: {
+      title: `${project.title} — Jonathan Brink`,
+      description: project.desc,
+      ...(image ? { images: [{ url: image }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: `${project.title} — Jonathan Brink`,
+      description: project.desc,
+    },
+  };
+}
+
 export default async function WorkDetailPage({
   params,
 }: {
@@ -24,7 +50,7 @@ export default async function WorkDetailPage({
   return (
     <>
       <Nav />
-      <main className="px-12 pt-[130px] pb-[100px]">
+      <main className="px-6 pt-[110px] pb-16 md:px-12 md:pt-[130px] md:pb-[100px]">
         {/* Header */}
         <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
           Case Study
@@ -113,7 +139,7 @@ export default async function WorkDetailPage({
                       section.images.length === 1
                         ? "grid-cols-1"
                         : section.images.length === 2
-                          ? "grid-cols-2"
+                          ? "grid-cols-1 md:grid-cols-2"
                           : "grid-cols-1"
                     }`}
                   >
@@ -155,7 +181,7 @@ export default async function WorkDetailPage({
             )}
           </div>
         ) : (
-          <div className="rounded-2xl border border-border bg-surface p-16 text-center">
+          <div className="rounded-2xl border border-border bg-surface p-8 text-center md:p-16">
             <div className="mb-4 font-display text-3xl text-text">
               Case Study Coming Soon
             </div>

@@ -3,11 +3,17 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { workshops } from "@/data/workshops";
 
+export const metadata = {
+  title: "Workshops",
+  description:
+    "Live cohort workshops where every attendee ships a working product.",
+};
+
 export default function WorkshopsPage() {
   return (
     <>
       <Nav />
-      <main className="px-12 pt-[130px] pb-[100px]">
+      <main className="px-6 pt-[110px] pb-16 md:px-12 md:pt-[130px] md:pb-[100px]">
         <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
           Live Workshops
         </div>
@@ -51,7 +57,7 @@ export default function WorkshopsPage() {
                 {w.subtitle}
               </div>
 
-              <div className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-5">
+              <div className="mt-4 grid grid-cols-1 gap-4 border-t border-border pt-5 sm:grid-cols-3">
                 <div>
                   <div className="font-mono text-[10px] uppercase tracking-[2px] text-muted">
                     Date

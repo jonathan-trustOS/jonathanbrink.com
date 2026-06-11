@@ -3,6 +3,12 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { essays } from "@/data/essays";
 
+export const metadata = {
+  title: "Writing",
+  description:
+    "Essays on product design, vibecoding, AI-augmented development, and the craft of shipping real products.",
+};
+
 export default function WritingPage() {
   const pinned = essays.filter((e) => e.pinned);
   const rest = essays.filter((e) => !e.pinned);
@@ -10,7 +16,7 @@ export default function WritingPage() {
   return (
     <>
       <Nav />
-      <main className="px-12 pt-[130px] pb-[100px]">
+      <main className="px-6 pt-[110px] pb-16 md:px-12 md:pt-[130px] md:pb-[100px]">
         <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
           Writing
         </div>
@@ -31,7 +37,7 @@ export default function WritingPage() {
           <Link
             key={essay.slug}
             href={`/writing/${essay.slug}`}
-            className="group mb-8 block rounded-2xl border border-border bg-surface p-10 no-underline transition-all duration-200 hover:border-violet/30 hover:shadow-[0_2px_24px_rgba(109,40,217,0.06)]"
+            className="group mb-8 block rounded-2xl border border-border bg-surface p-6 md:p-10 no-underline transition-all duration-200 hover:border-violet/30 hover:shadow-[0_2px_24px_rgba(109,40,217,0.06)]"
             style={{
               borderTop: "3px solid transparent",
               borderImage:

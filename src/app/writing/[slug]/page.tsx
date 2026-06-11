@@ -89,7 +89,7 @@ export default async function EssayPage({
   return (
     <>
       <Nav />
-      <main className="px-12 pt-[130px] pb-[100px]">
+      <main className="px-6 pt-[110px] pb-16 md:px-12 md:pt-[130px] md:pb-[100px]">
         {/* Header */}
         <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
           Essay

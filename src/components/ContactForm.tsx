@@ -70,7 +70,7 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 rounded-2xl border border-border bg-surface p-10"
+      className="space-y-6 rounded-2xl border border-border bg-surface p-6 md:p-10"
     >
       <div>
         <label

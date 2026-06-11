@@ -6,7 +6,7 @@ export default function ClaudeCodeWorkshopPage() {
   return (
     <>
       <Nav />
-      <main className="px-12 pt-[130px] pb-[100px]">
+      <main className="px-6 pt-[110px] pb-16 md:px-12 md:pt-[130px] md:pb-[100px]">
         <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
           Free Tool
         </div>
@@ -30,7 +30,7 @@ export default function ClaudeCodeWorkshopPage() {
         </div>
 
         {/* Workshop placeholder — replace with actual workshop component */}
-        <div className="overflow-hidden rounded-2xl border border-[#222240] bg-[#0d0d1a] p-16 text-center">
+        <div className="overflow-hidden rounded-2xl border border-[#222240] bg-[#0d0d1a] p-8 text-center md:p-16">
           <div className="mb-6 font-mono text-[10px] uppercase tracking-[2px] text-[#a78bfa]">
             Workshop Loading Area
           </div>

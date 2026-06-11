@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f7f4; --surface: #ffffff; --surface2: #f1f0ed; --border: #e5e3de;
+    --violet: #6d28d9; --cyan: #0891b2; --text: #1a1814; --dim: #4a4740;
+    --muted: #8a8680; --green: #059669;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1400px; height: 700px; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); padding: 56px 64px; overflow: hidden; }
+  .label { display: flex; align-items: center; gap: 10px; font-family: 'Fira Code', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--violet); }
+  .label::before { content: ''; display: block; width: 20px; height: 1px; background: var(--violet); }
+  .band-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 22px; }
+  .band-head .meta { font-family: 'Fira Code', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+
+  /* primitives */
+  .prims { display: grid; grid-template-columns: 1fr 28px 1fr 28px 1fr 28px 1fr 28px 1fr; align-items: stretch; gap: 0; margin-bottom: 48px; }
+  .prim { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 20px 20px; overflow: hidden; }
+  .prim::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--violet), var(--cyan)); }
+  .prim .num { font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 2px; color: var(--violet); margin-bottom: 10px; }
+  .prim .name { font-family: 'Bebas Neue', sans-serif; font-size: 30px; line-height: 1; letter-spacing: 1px; margin-bottom: 8px; }
+  .prim .desc { font-size: 11.5px; line-height: 1.5; color: var(--dim); }
+  .arrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 16px; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0 0 44px; }
+
+  /* engine */
+  .engine { display: grid; grid-template-columns: 1fr 30px 1.1fr 30px 1.15fr 30px 1fr 30px 1fr 30px 1fr; align-items: center; margin-bottom: 30px; }
+  .node { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px 16px; }
+  .node .nm { font-weight: 600; font-size: 14.5px; margin-bottom: 4px; }
+  .node .ds { font-size: 11px; line-height: 1.45; color: var(--dim); margin-bottom: 10px; }
+  .pill { display: inline-block; font-family: 'Fira Code', monospace; font-size: 8.5px; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; }
+  .pill.llm { color: var(--violet); background: #6d28d915; }
+  .pill.det { color: var(--cyan); background: #0891b212; }
+  .pill.grn { color: var(--green); background: #05966912; }
+  .trio { display: flex; flex-direction: column; gap: 8px; }
+  .trio .node { padding: 12px 14px 11px; }
+  .trio .node .nm { font-size: 13px; margin-bottom: 2px; }
+  .trio .node .ds { margin-bottom: 0; font-size: 10.5px; }
+  .trio-wrap { position: relative; padding-top: 22px; }
+  .trio-tag { position: absolute; top: 0; left: 0; right: 0; text-align: center; font-family: 'Fira Code', monospace; font-size: 9px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .final { border-color: #05966950; background: #05966908; }
+  .final .nm { color: var(--green); }
+
+  .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .note { display: flex; gap: 12px; align-items: baseline; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; }
+  .note .k { font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap; }
+  .note.a .k { color: var(--cyan); } .note.b .k { color: var(--violet); }
+  .note .t { font-size: 13px; line-height: 1.55; color: var(--dim); }
+  .note .t strong { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="band-head">
+    <div class="label">The vocabulary — five primitives</div>
+    <div class="meta">Everything the analyst can think about · nothing else</div>
+  </div>
+
+  <div class="prims">
+    <div class="prim"><div class="num">01</div><div class="name">SOURCE</div><div class="desc">A registered data origin</div></div>
+    <div class="arrow">→</div>
+    <div class="prim"><div class="num">02</div><div class="name">ENTITY</div><div class="desc">A steward-approved object</div></div>
+    <div class="arrow">→</div>
+    <div class="prim"><div class="num">03</div><div class="name">INTENT</div><div class="desc">A plain-language request</div></div>
+    <div class="arrow">→</div>
+    <div class="prim"><div class="num">04</div><div class="name">FLOW</div><div class="desc">An auto-generated pipeline</div></div>
+    <div class="arrow">→</div>
+    <div class="prim"><div class="num">05</div><div class="name">DATASET</div><div class="desc">A governed, monitored output</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="band-head">
+    <div class="label">The engine — multi-agent chain</div>
+    <div class="meta">Seven agents · one deterministic plan · sub-60s</div>
+  </div>
+
+  <div class="engine">
+    <div class="node">
+      <div class="nm">Listener</div>
+      <div class="ds">Captures intent in the analyst's language</div>
+      <span class="pill llm">LLM</span>
+    </div>
+    <div class="arrow">→</div>
+    <div class="node">
+      <div class="nm">Coordinator</div>
+      <div class="ds">Plans every task before any agent runs</div>
+      <span class="pill det">Deterministic · &lt;1ms</span>
+    </div>
+    <div class="arrow">→</div>
+    <div class="trio-wrap">
+      <div class="trio-tag">Parallel</div>
+      <div class="trio">
+        <div class="node"><div class="nm">Data Resolver</div><div class="ds">Finds the data</div></div>
+        <div class="node"><div class="nm">Policy Checker</div><div class="ds">Excludes PII at SQL level</div></div>
+        <div class="node"><div class="nm">Schema Monitor</div><div class="ds">Watches for drift</div></div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="node">
+      <div class="nm">Flow Builder</div>
+      <div class="ds">Generates the pipeline</div>
+      <span class="pill llm">LLM</span>
+    </div>
+    <div class="arrow">→</div>
+    <div class="node">
+      <div class="nm">Quality Checker</div>
+      <div class="ds">Validates the output</div>
+      <span class="pill det">Deterministic</span>
+    </div>
+    <div class="arrow">→</div>
+    <div class="node final">
+      <div class="nm">Dataset delivered</div>
+      <div class="ds">Governed, monitored, ready</div>
+      <span class="pill grn">✓ &lt;60s</span>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note a">
+      <div class="k">Decision 01</div>
+      <div class="t">The Coordinator is deterministic, not an LLM — <strong>compliance ordering can't be probabilistic.</strong></div>
+    </div>
+    <div class="note b">
+      <div class="k">Decision 02</div>
+      <div class="t">Specialized agents over a monolith — <strong>each step is independently evaluable.</strong> A monolithic agent gives speed, not testability.</div>
+    </div>
+  </div>
+</body>
+</html>

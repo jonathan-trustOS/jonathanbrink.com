@@ -48,7 +48,7 @@ export default async function WorkshopDetailPage({
       <Nav />
       <main className="pt-[110px] pb-[100px]">
         {/* Hero */}
-        <section className="px-12 pt-12 pb-20">
+        <section className="px-6 pt-12 pb-20 md:px-12">
           <div className="grid gap-16 lg:grid-cols-[1.3fr_1fr]">
             <div>
               <div className="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
@@ -138,7 +138,7 @@ export default async function WorkshopDetailPage({
         </section>
 
         {/* Outcomes */}
-        <section className="border-y border-border bg-surface px-12 py-16">
+        <section className="border-y border-border bg-surface px-6 py-16 md:px-12">
           <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
             A-HA Check
           </div>
@@ -161,7 +161,7 @@ export default async function WorkshopDetailPage({
         </section>
 
         {/* Phases */}
-        <section className="px-12 py-20">
+        <section className="px-6 py-20 md:px-12">
           <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
             The Optimal Path
           </div>
@@ -181,7 +181,7 @@ export default async function WorkshopDetailPage({
         </section>
 
         {/* Testimonial */}
-        <section className="border-t border-border bg-surface px-12 py-20">
+        <section className="border-t border-border bg-surface px-6 py-20 md:px-12">
           <blockquote className="mx-auto max-w-[820px] text-center">
             <div
               className="font-accent text-[clamp(28px,3.5vw,44px)] leading-[1.2] italic text-text"
@@ -196,7 +196,7 @@ export default async function WorkshopDetailPage({
         </section>
 
         {/* FAQ */}
-        <section className="px-12 py-20">
+        <section className="px-6 py-20 md:px-12">
           <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
             Questions
           </div>
@@ -216,7 +216,7 @@ export default async function WorkshopDetailPage({
         </section>
 
         {/* Capstone CTA */}
-        <section className="px-12 py-24">
+        <section className="px-6 py-24 md:px-12">
           <div className="mx-auto max-w-[820px] text-center">
             <div
               className="mb-6 font-accent text-[clamp(36px,5vw,64px)] leading-[1.1] italic text-text"

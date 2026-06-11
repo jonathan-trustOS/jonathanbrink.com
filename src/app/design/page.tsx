@@ -3,6 +3,12 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { designProjects } from "@/data/projects";
 
+export const metadata = {
+  title: "Design",
+  description:
+    "Twenty-five years of product design — IBM, StreamSets, Infinx, LiveHive, and nineteen years of independent consulting.",
+};
+
 export default function DesignPage() {
   const featured = designProjects.find((p) => p.featured);
   const rest = designProjects.filter((p) => !p.featured);
@@ -10,14 +16,14 @@ export default function DesignPage() {
   return (
     <>
       <Nav />
-      <main className="px-12 pt-[130px] pb-[100px]">
+      <main className="px-6 pt-[110px] pb-16 md:px-12 md:pt-[130px] md:pb-[100px]">
         <div className="mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[3px] text-violet before:block before:h-px before:w-5 before:bg-violet">
           UX Design
         </div>
         <h1 className="mb-3 font-display text-[clamp(48px,6vw,80px)] leading-none text-text">
           Twenty-five years of{" "}
           <em className="font-accent" style={{ fontStyle: "italic" }}>
-            enterprise design
+            product design
           </em>
           .
         </h1>
@@ -27,12 +33,12 @@ export default function DesignPage() {
           Prototype-tested. Revenue-proven.
         </p>
 
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[14px] border border-border bg-border">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[14px] border border-border bg-border md:grid-cols-2">
           {/* Featured card */}
           {featured && (
             <Link
               href={`/design/${featured.slug}`}
-              className="group relative col-span-2 grid grid-cols-[1fr_1fr] items-center gap-[60px] bg-surface p-11 no-underline transition-colors duration-200 after:absolute after:inset-x-0 after:top-0 after:h-[3px] after:bg-[linear-gradient(90deg,var(--color-violet),var(--color-cyan))] after:opacity-0 after:transition-opacity after:duration-200 hover:bg-surface2 hover:after:opacity-100"
+              className="group relative grid grid-cols-1 items-center gap-8 bg-surface p-6 md:col-span-2 md:p-11 lg:grid-cols-[1fr_1fr] lg:gap-[60px] no-underline transition-colors duration-200 after:absolute after:inset-x-0 after:top-0 after:h-[3px] after:bg-[linear-gradient(90deg,var(--color-violet),var(--color-cyan))] after:opacity-0 after:transition-opacity after:duration-200 hover:bg-surface2 hover:after:opacity-100"
             >
               <div>
                 <div
@@ -71,7 +77,7 @@ export default function DesignPage() {
                     </span>
                   ))}
                 </div>
-                <div className="absolute right-10 bottom-10 flex h-[38px] w-[38px] items-center justify-center rounded-full border border-border2 text-[15px] text-muted transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:border-violet group-hover:text-violet">
+                <div className="absolute right-10 bottom-10 hidden h-[38px] w-[38px] items-center justify-center rounded-full border border-border2 text-[15px] text-muted transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:border-violet group-hover:text-violet md:flex">
                   ↗
                 </div>
               </div>
@@ -112,7 +118,7 @@ export default function DesignPage() {
             <Link
               key={p.slug}
               href={`/design/${p.slug}`}
-              className="group relative flex flex-col bg-surface p-11 no-underline transition-colors duration-200 after:absolute after:inset-x-0 after:top-0 after:h-[3px] after:bg-[linear-gradient(90deg,var(--color-violet),var(--color-cyan))] after:opacity-0 after:transition-opacity after:duration-200 hover:bg-surface2 hover:after:opacity-100"
+              className="group relative flex flex-col bg-surface p-6 md:p-11 no-underline transition-colors duration-200 after:absolute after:inset-x-0 after:top-0 after:h-[3px] after:bg-[linear-gradient(90deg,var(--color-violet),var(--color-cyan))] after:opacity-0 after:transition-opacity after:duration-200 hover:bg-surface2 hover:after:opacity-100"
             >
               <div
                 className="mb-5 inline-block self-start rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-[2px]"
@@ -146,7 +152,7 @@ export default function DesignPage() {
                   </span>
                 ))}
               </div>
-              <div className="absolute right-10 bottom-10 flex h-[38px] w-[38px] items-center justify-center rounded-full border border-border2 text-[15px] text-muted transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:border-violet group-hover:text-violet">
+              <div className="absolute right-10 bottom-10 hidden h-[38px] w-[38px] items-center justify-center rounded-full border border-border2 text-[15px] text-muted transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:border-violet group-hover:text-violet md:flex">
                 ↗
               </div>
             </Link>

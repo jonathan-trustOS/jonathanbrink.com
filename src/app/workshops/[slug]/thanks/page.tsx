@@ -46,6 +46,8 @@ export default function WorkshopThanksPage() {
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get("session_id");
     if (!sessionId) {
+      // Synchronous validation of the Stripe redirect param; runs once on mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setState({ kind: "error", message: "Missing session id." });
       return;
     }
@@ -88,7 +90,7 @@ export default function WorkshopThanksPage() {
   return (
     <>
       <Nav />
-      <main className="px-12 pt-[160px] pb-[100px]">
+      <main className="px-6 pt-[140px] pb-16 md:px-12 md:pt-[160px] md:pb-[100px]">
         <div className="mx-auto max-w-[720px]">
           {state.kind === "loading" && (
             <div className="font-mono text-[11px] uppercase tracking-[2px] text-muted">
@@ -99,7 +101,7 @@ export default function WorkshopThanksPage() {
           {state.kind === "error" && (
             <div>
               <div className="mb-4 font-mono text-[11px] uppercase tracking-[2px] text-amber">
-                Something's off
+                Something&apos;s off
               </div>
               <h1 className="mb-4 font-display text-[clamp(40px,5vw,64px)] leading-none text-text">
                 We couldn&apos;t load your confirmation.

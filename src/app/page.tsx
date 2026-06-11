@@ -1,10 +1,11 @@
 import Nav from "@/components/Nav";
-import HeroSection from "@/components/HeroSection";
-import Ticker from "@/components/Ticker";
-import WorkSection from "@/components/WorkSection";
-import DesignSection from "@/components/DesignSection";
-import ToolsSection from "@/components/ToolsSection";
-import AboutStrip from "@/components/AboutStrip";
+import HeroV2 from "@/components/HeroV2";
+import TelemetryStrip from "@/components/TelemetryStrip";
+import SixtySecondStudy from "@/components/SixtySecondStudy";
+import ToolsEngine from "@/components/ToolsEngine";
+import NowBuilding from "@/components/NowBuilding";
+import PathsCTA from "@/components/PathsCTA";
+import Colophon from "@/components/Colophon";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -13,12 +14,13 @@ export default function Home() {
     <>
       <ScrollReveal />
       <Nav />
-      <HeroSection />
-      <Ticker />
-      <WorkSection />
-      <DesignSection />
-      <ToolsSection />
-      <AboutStrip />
+      <HeroV2 />
+      <TelemetryStrip />
+      <SixtySecondStudy />
+      <ToolsEngine />
+      <NowBuilding />
+      <PathsCTA />
+      <Colophon />
       <Footer />
     </>
   );

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f7f4; --surface: #ffffff; --surface2: #f1f0ed; --border: #e5e3de;
+    --violet: #6d28d9; --cyan: #0891b2; --text: #1a1814; --dim: #4a4740;
+    --muted: #8a8680; --green: #059669;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1400px; height: 620px; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); padding: 56px 64px; overflow: hidden; }
+  .band-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 26px; }
+  .label { display: flex; align-items: center; gap: 10px; font-family: 'Fira Code', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--violet); }
+  .label::before { content: ''; display: block; width: 20px; height: 1px; background: var(--violet); }
+  .meta { font-family: 'Fira Code', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+
+  .wrap { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; align-items: stretch; }
+
+  /* terminal card */
+  .term { background: #0d0d1a; border: 1px solid #222240; border-radius: 14px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.12); display: flex; flex-direction: column; }
+  .term-bar { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; background: #07070f; border-bottom: 1px solid #1a1a2e; }
+  .term-dots { display: flex; gap: 7px; }
+  .term-dots div { width: 11px; height: 11px; border-radius: 50%; }
+  .term-title { font-family: 'Fira Code', monospace; font-size: 11px; color: #475569; }
+  .term-body { padding: 26px 30px; font-family: 'Fira Code', monospace; font-size: 14px; line-height: 1.9; color: #94a3b8; flex: 1; }
+  .term-body .c { color: #475569; }
+  .term-body .key-i { color: #a78bfa; }
+  .term-body .key-o { color: #22d3ee; }
+  .term-body .str { color: #e2e8f0; }
+  .term-body .ok { color: #34d399; }
+  .term-body .rule { border: none; border-top: 1px dashed #222240; margin: 14px 0; }
+
+  /* stats column */
+  .stats { display: grid; grid-template-rows: 1fr 1fr; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 18px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--violet), var(--cyan)); }
+  .stat-card .v { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 0.95; letter-spacing: 1px; }
+  .stat-card .k { font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
+  .stat-card .v em { font-family: 'Instrument Serif', serif; font-style: italic; letter-spacing: 0; background: linear-gradient(90deg, var(--violet), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  .foot { margin-top: 26px; font-size: 14px; line-height: 1.65; color: var(--dim); max-width: 980px; }
+  .foot strong { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="band-head">
+    <div class="label">The process — every commit framed by intent &amp; outcome</div>
+    <div class="meta">AI wrote the how · I owned what "done" meant</div>
+  </div>
+
+  <div class="wrap">
+    <div class="term">
+      <div class="term-bar">
+        <div class="term-dots"><div style="background:#ff6b6b"></div><div style="background:#ffd93d"></div><div style="background:#6bcb77"></div></div>
+        <div class="term-title">flowos — sprint 6 of 9</div>
+      </div>
+      <div class="term-body">
+        <span class="c">## commit — reframe-before-execution</span><br>
+        <span class="key-i">INTENT</span>&nbsp;&nbsp;→ <span class="str">"the analyst sees a reframe before execution"</span><br>
+        <span class="key-o">OUTCOME</span> → <span class="str">"the reframe is editable inline and re-runs<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the pipeline on save"</span><br>
+        <hr class="rule">
+        <span class="c">## commit — pii-excluded-not-masked</span><br>
+        <span class="key-i">INTENT</span>&nbsp;&nbsp;→ <span class="str">"sensitive fields never exist in the output"</span><br>
+        <span class="key-o">OUTCOME</span> → <span class="str">"PII excluded at the SQL level — exports,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;screenshots, downstream pipes all clean"</span><br>
+        <hr class="rule">
+        <span class="ok">✓ tests 696/696 green</span> <span class="c">· model wrote the code · I owned the boundary<br>between right and almost-right</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card"><div class="v">14</div><div class="k">days, end to end</div></div>
+      <div class="stat-card"><div class="v">9</div><div class="k">sprints of scope</div></div>
+      <div class="stat-card"><div class="v">696</div><div class="k">tests, green</div></div>
+      <div class="stat-card"><div class="v">&lt;60<em>s</em></div><div class="k">intent to dataset</div></div>
+    </div>
+  </div>
+
+  <div class="foot"><strong>The division of labor is the part that scales.</strong> The team did what only the team could do — cross-organization research and product alignment. One person did what only one person could do — hold the entire system in one head and make every decision in one voice.</div>
+</body>
+</html>

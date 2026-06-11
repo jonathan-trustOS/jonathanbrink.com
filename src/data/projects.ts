@@ -32,6 +32,102 @@ export interface Project {
 // ── Products (vibecoded / shipped) ─────────────────────────────
 export const projects: Project[] = [
   {
+    slug: "flowos",
+    title: "FlowOS",
+    desc: "14 days to prove a design team can ship working enterprise software. Typed intent to a governed, monitored dataset in under 60 seconds — the build that greenlit IBM's bigger version and pushed an MCP server into the platform.",
+    tag: "Enterprise · AI",
+    tagColor: "var(--color-violet)",
+    tagBg: "var(--color-violet-dim)",
+    pills: ["Multi-agent", "IBM watsonx.data", "14-day build"],
+    featured: true,
+    heroImage: "/images/work/flowos/screen-delivered-dataset.jpg",
+    category: "product",
+    role: "Senior Design Manager — designed & coded",
+    timeline: "14 days · 2026",
+    outcome: "Deployed — greenlit the bigger version",
+    caseStudy: [
+      {
+        heading: "The Bet",
+        body: "Management's brief: prove a design team could produce working enterprise product on IBM infrastructure. Not a prototype. Not a clickable Figma. A real product.\n\nDesign at most enterprise software companies is a specification function — we describe what should exist; engineering decides what ships. AI is closing that gap. The question was whether the design org's role at IBM could close with it.\n\nIf design teams can ship real product, the design org's role inside IBM changes. That was the bet worth making. I took the brief literally. 14 days. The output had to be deployed, not described.",
+      },
+      {
+        heading: "100 Analysts. 10 Engineers. One Bottleneck.",
+        body: "Before any of the build, my team ran a research project across enterprise data orgs. Three findings did most of the work that followed: a 1:10:100 ratio of admins to engineers to analysts, a two-month average wait for a pipeline ticket, and 80% of pipeline work agentically addressable.\n\nThe ratio tells you who the product is for. Every data engineer serves ten analysts. Every analyst waits behind the queue of every other analyst. The 80% finding tells you what's actually broken — most pipeline work isn't bespoke craft, it's repetitive translation that an agentic system can handle without a human in the loop.\n\nFlowOS isn't trying to replace the data engineer. It's trying to free her from the 80% that doesn't need her. We worked with Product to turn that research into requirements, with a single filter for every decision: does this require the analyst to know something they shouldn't? If yes — automate it, hide it, or cut it.\n\nThe thesis collapsed to a number: 60 seconds from typed intent to a delivered, governed, monitored dataset. Not marketing copy — a forcing function for every decision that followed.",
+        images: [
+          {
+            src: "/images/work/flowos/research-findings.png",
+            alt: "FlowOS field research — 1:10:100 ratio, 2-month pipeline wait, 80% agentically addressable",
+            caption: "The three findings that did most of the work",
+          },
+        ],
+      },
+      {
+        heading: "Three Decisions Did Most of the Work",
+        body: "Strategy is what you cut. These are the three cuts everything else followed from.\n\nFive primitives, not fifty. Five things the system lets users think about: Source. Entity. Intent. Flow. Dataset. Everything else — SQL, schemas, joins, YAML, pipelines — automated, hidden, or cut. Six primitives makes an engineering tool. Five was the maximum where analyst language still fit.\n\nGovernance enforced at the data layer, not the UI. The default pattern is to mask PII — it exists in output, displays blanks, and leaks the moment someone exports or screenshots. I chose to exclude PII at the SQL level. Compliance became structural, not behavioral. That single decision made enterprise IT comfortable letting analysts run anything.\n\n60 seconds as a forcing function. A hard wall-clock budget, intent to dataset: parse 8s, resolve 10s, generate 20s, execute 12s, render 5s, buffer 5s. The SLA wasn't a feature — it was a discipline. Anything that broke it got redesigned or cut.",
+        images: [
+          {
+            src: "/images/work/flowos/sixty-seconds.png",
+            alt: "The 60-second SLA budget — parse, resolve, generate, execute, render, buffer",
+            caption: "The wall-clock budget — every stage got an allocation",
+          },
+        ],
+      },
+      {
+        heading: "Inside the 60 Seconds",
+        body: "The shape of the system wasn't an engineering choice. It was the only shape that could honor the SLA, the governance rules, and the analyst's language at the same time.\n\nThe engine is a chain of seven specialized agents: a Listener captures intent, a Coordinator plans tasks, then a Data Resolver, Policy Checker, and Schema Monitor run in parallel before a Flow Builder generates the pipeline and a Quality Checker validates the output.\n\nTwo product decisions sit inside that picture. The Coordinator is deterministic, not an LLM — compliance ordering can't be probabilistic. And the specialized agents exist so each step is independently evaluable; a monolithic agent would have given me speed, but not testability. The architecture is what makes the 60-second promise something the system actually guarantees, not something the marketing copy hopes for.",
+        images: [
+          {
+            src: "/images/work/flowos/system-architecture.png",
+            alt: "FlowOS system map — five primitives and the seven-agent engine",
+            caption: "The vocabulary and the engine — five primitives, seven agents, one deterministic plan",
+          },
+        ],
+      },
+      {
+        heading: "How the Work Actually Ran",
+        body: "The build looks like a solo sprint. The work behind it wasn't. My team did the research that defined who FlowOS was for and what the 80% target meant. I partnered with Product to translate those findings into the fundamental requirements — the five primitives, the governance posture, the SLA. Then I took the requirements into the IDE and built.\n\nI developed an AI-assisted coding process focused on intent and outcomes — not on the how. Every commit was framed by a written intent (\"the analyst sees a reframe before execution\") and a written outcome (\"the reframe is editable inline and re-runs the pipeline on save\"). The model wrote the code; I owned the boundary between right and almost-right.\n\nThe numbers: 14 days end to end. 9 sprints of scope. 696 tests, green. Under 60 seconds from intent to dataset.",
+        images: [
+          {
+            src: "/images/work/flowos/intent-outcome.png",
+            alt: "Intent and outcome commit framing with build stats — 14 days, 9 sprints, 696 tests, under 60 seconds",
+            caption: "Every commit framed by a written intent and a written outcome",
+          },
+        ],
+      },
+      {
+        heading: "Where the Craft Mattered",
+        body: "Enterprise analysts are conditioned to expect ugly tools that gaslight them. The craft moved trust forward — every screen is a moment where the system says \"I heard you, here's what I'm doing, here's what you can ask next.\"\n\nThe system shows what it heard in the analyst's own language before it executes anything. If the reframe is wrong, the analyst corrects it now — not after waiting 45 seconds for a wrong answer. The task plan is visible, but expressed in human terms — \"find the data,\" \"check policy,\" \"build the pipeline\" — not \"instantiate query DAG.\"\n\nExecution streams progress instead of showing a spinner; each agent reports as it completes, so the 60-second budget is felt, not just measured. And the result lands with a plain-English summary, a sample preview, and the levers an analyst actually wants — share, refine, save snapshot. No SQL. No column UUIDs.",
+        images: [
+          {
+            src: "/images/work/flowos/screen-live-execution.jpg",
+            alt: "FlowOS — live execution view with streaming agent progress",
+            caption: "Live execution — streaming progress, not a spinner",
+          },
+          {
+            src: "/images/work/flowos/screen-delivered-dataset.jpg",
+            alt: "FlowOS — delivered dataset view with plain-English summary",
+            caption: "The payoff — a governed dataset, delivered in 32.6 seconds",
+          },
+        ],
+      },
+      {
+        heading: "What Happened Next",
+        body: "The first product review wasn't polite questions about \"the vision.\" It was \"how soon, how broad, who else needs to see this.\" Working software has a different gravitational pull than slides.\n\nFlowOS proved the simplified solution was feasible — the validation that greenlit the bigger version. The biggest unanticipated outcome was upstream: connecting FlowOS to IBM's existing data infrastructure was the single largest technical roadblock in the build, and the work to clear it pushed IBM to develop a Model Context Protocol server for most of its data integration products. A 14-day prototype changed the shape of the platform underneath it.\n\nThe decisions that started as constraints in this build — the five primitives, data-layer governance, the 60-second SLA — became the scaffolding the broader work organized around. Design didn't just specify the product. Design built the thing that changed how the platform thought about itself.",
+        images: [
+          {
+            src: "/images/work/flowos/execution-final.gif",
+            alt: "FlowOS — execution completing and dataset delivered, animated",
+            caption: "The working final — intent to delivered dataset, on camera",
+          },
+        ],
+      },
+      {
+        heading: "What I'm Taking Forward",
+        body: "Design that ships is the next generation of design leadership. Three convictions came out of this build.\n\nProduct judgment still lives in the designer. AI is the multiplier, not the substitute. The faster the tools get, the more those calls matter.\n\nStrategy is what you cut. Five primitives, not fifty. PII excluded, not masked. 60 seconds, not \"fast.\" The discipline of refusal is what makes a product feel inevitable.\n\nValidation beats completeness. A 14-day shipped product changed the conversation. A six-month spec wouldn't have. The pattern to scale across a team: design orgs that prototype in real product, not Figma.",
+      },
+    ],
+  },
+  {
     slug: "persona-library",
     title: "Persona Library",
     desc: "Open-source UX research platform. 200+ community-validated personas for the tools that run modern work. Searchable, exportable, contributable.",
@@ -75,7 +171,6 @@ export const projects: Project[] = [
     tagBg: "#0891b212",
     pills: ["SLM", "Qwen 7B + LoRA", "TrustOS"],
     url: "https://elleapp.org",
-    featured: true,
     heroImage: "/images/work/elle/homepage.png",
     category: "product",
     role: "Creator & Architect",
@@ -476,7 +571,7 @@ export const allProjects = [...projects, ...designProjects];
 
 // ── Homepage filters ───────────────────────────────────────────
 export const homepageProjects = projects.filter((p) =>
-  ["persona-library", "elle", "play-exposed", "jett-builder", "moyst", "swayleo", "scout", "ibm"].includes(p.slug)
+  ["flowos", "persona-library", "elle", "play-exposed", "jett-builder", "moyst", "swayleo", "scout", "ibm"].includes(p.slug)
 );
 
 export const homepageDesignProjects = designProjects.filter((p) =>

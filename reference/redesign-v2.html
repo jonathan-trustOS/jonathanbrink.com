@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jonathan Brink — Design. Build. Ship. (v2 concept)</title>
+<meta name="description" content="Redesign concept: the portfolio that is itself a shipped product.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f7f4; --surface: #ffffff; --surface2: #f1f0ed; --border: #e5e3de;
+    --border2: #d5d2cb; --violet: #6d28d9; --violet-hover: #5b21b6; --cyan: #0891b2;
+    --text: #1a1814; --dim: #4a4740; --muted: #8a8680; --green: #059669; --amber: #d97706;
+    --win: #0d0d1a; --win2: #07070f; --win-border: #222240; --win-line: #1a1a2e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif; font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; overflow-x: clip;
+  }
+  /* Grain — actually visible this time */
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection { background: var(--violet); color: #fff; }
+
+  .mono { font-family: 'Fira Code', monospace; }
+  .label {
+    display: flex; align-items: center; gap: 10px; font-family: 'Fira Code', monospace;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--violet);
+  }
+  .label::before { content: ''; width: 20px; height: 1px; background: var(--violet); }
+
+  .wrap { padding-left: 48px; padding-right: 48px; }
+  @media (max-width: 720px) { .wrap { padding-left: 22px; padding-right: 22px; } }
+
+  /* Reveal */
+  .fade { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .fade { opacity: 1; transform: none; transition: none; }
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 100; display: flex; align-items: center;
+    justify-content: space-between; padding: 16px 48px; border-bottom: 1px solid var(--border);
+    background: rgba(248,247,244,0.92); backdrop-filter: blur(12px);
+  }
+  @media (max-width: 720px) { nav { padding: 14px 22px; } }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--text); text-decoration: none; }
+  .logo span { color: var(--violet); }
+  .nav-status { display: flex; align-items: center; gap: 8px; font-family: 'Fira Code', monospace; font-size: 11px; color: var(--muted); }
+  .nav-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2.4s ease infinite; }
+  @keyframes pulse { 50% { opacity: 0.4; } }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { font-family: 'Fira Code', monospace; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { border: 1px solid var(--violet); color: var(--violet) !important; border-radius: 6px; padding: 9px 18px; }
+  .nav-cta:hover { background: var(--violet); color: #fff !important; }
+  @media (max-width: 980px) { .nav-links a:not(.nav-cta) { display: none; } .nav-status { display: none; } }
+
+  /* ── Hero ── */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding-top: 150px; padding-bottom: 64px; min-height: 92vh; }
+  @media (max-width: 1080px) { .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 120px; } }
+  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(58px, 8.5vw, 118px); line-height: 0.92; letter-spacing: 1px; }
+  .hero h1 .word { display: block; opacity: 0; transform: translateY(30px); animation: setline 0.7s cubic-bezier(0.2,0.7,0.2,1) forwards; }
+  .hero h1 .word:nth-child(2) { animation-delay: 0.15s; }
+  .hero h1 .word.ship { font-family: 'Instrument Serif', serif; font-style: italic; letter-spacing: 0;
+    background: linear-gradient(135deg, var(--violet), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation-delay: 0.3s; padding-right: 0.1em; }
+  @keyframes setline { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero h1 .word { opacity: 1; transform: none; animation: none; } }
+  .hero .sub { margin: 34px 0 0; max-width: 460px; font-size: 17px; line-height: 1.75; color: var(--dim); }
+  .hero .sub strong { color: var(--text); }
+  .hero .proof-line { margin-top: 22px; font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted); }
+  .hero .proof-line b { color: var(--green); font-weight: 500; }
+
+  /* ── The live demo window ── */
+  .demo {
+    background: var(--win); border: 1px solid var(--win-border); border-radius: 16px; overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.14), 0 0 0 1px rgba(109,40,217,0.12);
+  }
+  .demo-bar { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; background: var(--win2); border-bottom: 1px solid var(--win-line); }
+  .demo-dots { display: flex; gap: 7px; }
+  .demo-dots i { width: 11px; height: 11px; border-radius: 50%; }
+  .demo-title { font-family: 'Fira Code', monospace; font-size: 11px; color: #475569; }
+  .demo-title b { color: #34d399; font-weight: 500; }
+  .demo-body { padding: 22px; }
+  @media (max-width: 720px) { .demo-body { padding: 16px; } }
+  .demo-input { display: flex; gap: 10px; }
+  .demo-input input {
+    flex: 1; background: #111125; border: 1px solid var(--win-line); border-radius: 8px; color: #e2e8f0;
+    font-family: 'Fira Code', monospace; font-size: 13px; padding: 13px 14px; outline: none; min-width: 0;
+  }
+  .demo-input input:focus { border-color: #7c3aed; }
+  .demo-input button {
+    background: linear-gradient(135deg, #7c3aed, #5b21b6); color: #fff; border: 0; border-radius: 8px;
+    font: 600 13px 'Inter', sans-serif; padding: 0 22px; cursor: pointer; white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+  }
+  .demo-input button:hover { transform: translateY(-1px); }
+  .demo-input button:disabled { opacity: 0.6; cursor: wait; transform: none; }
+  .demo-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
+  .demo-chips button {
+    background: #111125; border: 1px solid var(--win-line); color: #94a3b8; border-radius: 999px;
+    font-family: 'Fira Code', monospace; font-size: 10.5px; padding: 6px 12px; cursor: pointer;
+  }
+  .demo-chips button:hover { border-color: #7c3aed; color: #e2e8f0; }
+  .demo-run { margin-top: 18px; border-top: 1px dashed var(--win-line); padding-top: 16px; min-height: 248px; }
+  .step { display: flex; align-items: flex-start; gap: 10px; padding: 5.5px 0; font-family: 'Fira Code', monospace; font-size: 12.5px; color: #94a3b8; opacity: 0; transform: translateY(6px); transition: opacity 0.3s, transform 0.3s; }
+  .step.on { opacity: 1; transform: none; }
+  .step .ico { width: 16px; text-align: center; flex-shrink: 0; color: #7c3aed; }
+  .step .ico.spin { animation: rot 0.9s linear infinite; }
+  @keyframes rot { to { transform: rotate(360deg); } }
+  .step.done .ico { color: #34d399; animation: none; }
+  .step .body { min-width: 0; }
+  .step .agent { color: #a78bfa; }
+  .step .quiet { color: #475569; }
+  .step .t { color: #475569; margin-left: auto; flex-shrink: 0; }
+  .result {
+    margin-top: 14px; background: #111125; border: 1px solid #34d39940; border-radius: 10px; padding: 16px;
+    opacity: 0; transform: translateY(8px); transition: opacity 0.4s, transform 0.4s;
+  }
+  .result.on { opacity: 1; transform: none; }
+  .result .rt { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .result .rt b { color: #e2e8f0; font: 600 15px 'Inter', sans-serif; }
+  .result .rt span { font-family: 'Fira Code', monospace; font-size: 11px; color: #34d399; }
+  .result .rm { margin-top: 6px; font-family: 'Fira Code', monospace; font-size: 11px; color: #94a3b8; }
+  .result .pol { margin-top: 10px; font-family: 'Fira Code', monospace; font-size: 10.5px; color: #fbbf24; }
+  .demo-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 22px; border-top: 1px solid var(--win-line); background: var(--win2); flex-wrap: wrap; }
+  .demo-foot span { font-family: 'Fira Code', monospace; font-size: 10.5px; color: #475569; }
+  .demo-foot a { font-family: 'Fira Code', monospace; font-size: 11px; color: #a78bfa; text-decoration: none; white-space: nowrap; }
+  .demo-foot a:hover { color: #e2e8f0; }
+
+  /* ── Telemetry strip ── */
+  .telemetry { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); }
+  .tele-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
+  @media (max-width: 720px) { .tele-stats { grid-template-columns: repeat(2, 1fr); } .tele-stats > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); } .tele-stats > div:nth-child(3) { border-left: 0; } }
+  .tele-stats > div { padding: 18px 24px; border-left: 1px solid var(--border); }
+  .tele-stats > div:first-child { border-left: 0; }
+  .tele-stats .v { font-family: 'Bebas Neue', sans-serif; font-size: 34px; line-height: 1; background: linear-gradient(135deg, var(--violet), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .tele-stats .k { margin-top: 3px; font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .deploylog { overflow: hidden; padding: 11px 0; }
+  .deploylog .track { display: flex; white-space: nowrap; animation: tick 36s linear infinite; width: max-content; }
+  @keyframes tick { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .deploylog .track { animation: none; } }
+  .deploylog .item { display: inline-flex; align-items: center; gap: 8px; padding: 0 26px; font-family: 'Fira Code', monospace; font-size: 11.5px; color: var(--muted); }
+  .deploylog .ok { color: var(--green); }
+  .deploylog .ref { color: var(--violet); }
+
+  /* ── Sections ── */
+  section { padding-top: 96px; padding-bottom: 96px; }
+  @media (max-width: 720px) { section { padding-top: 64px; padding-bottom: 64px; } }
+  .sec-head h2 { margin: 14px 0 10px; font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(38px, 5vw, 64px); line-height: 1; }
+  .sec-head h2 em { font-family: 'Instrument Serif', serif; font-style: italic; letter-spacing: 0; }
+  .sec-head p { max-width: 560px; color: var(--dim); font-size: 15.5px; }
+
+  /* ── Featured case study: the 60-second version ── */
+  .study { margin-top: 44px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--surface); }
+  .study-top { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; padding: 40px; align-items: center;
+    border-bottom: 1px solid var(--border); position: relative; }
+  .study-top::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--violet), var(--cyan)); }
+  @media (max-width: 980px) { .study-top { grid-template-columns: 1fr; padding: 26px; } }
+  .study-tag { display: inline-block; border-radius: 999px; padding: 5px 12px; font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--violet); background: #6d28d912; }
+  .study-top h3 { margin: 14px 0 10px; font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(40px, 4.5vw, 60px); line-height: 0.95; }
+  .study-top p { color: var(--dim); font-size: 15px; max-width: 440px; }
+  .study-shot { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--win2); }
+  .study-shot img { display: block; width: 100%; height: auto; }
+  .sixty { padding: 26px 40px 34px; }
+  @media (max-width: 980px) { .sixty { padding: 22px 26px 28px; } }
+  .sixty-label { font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); }
+  .sixty-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+  @media (max-width: 980px) { .sixty-grid { grid-template-columns: repeat(2, 1fr); } }
+  .sixty-grid .cell { border: 1px solid var(--border); border-radius: 10px; padding: 16px; background: var(--bg); }
+  .sixty-grid .v { font-family: 'Bebas Neue', sans-serif; font-size: 38px; line-height: 1; }
+  .sixty-grid .k { margin-top: 4px; font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .cuts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+  @media (max-width: 980px) { .cuts { grid-template-columns: 1fr; } }
+  .cuts .cut { border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-size: 13px; color: var(--dim); background: var(--bg); }
+  .cuts .cut b { display: block; color: var(--text); font-weight: 600; margin-bottom: 4px; font-size: 13.5px; }
+  .study-cta { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin-top: 22px; }
+  .btn { display: inline-flex; align-items: center; gap: 9px; border-radius: 8px; padding: 13px 24px; font: 600 14px 'Inter', sans-serif; text-decoration: none; transition: transform 0.15s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--violet); color: #fff; border: 1px solid var(--violet); }
+  .read-time { font-family: 'Fira Code', monospace; font-size: 11px; color: var(--muted); }
+
+  /* ── Tools as engine ── */
+  .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 44px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  @media (max-width: 980px) { .tools-grid { grid-template-columns: 1fr; } }
+  .tool { background: var(--surface); padding: 30px 28px 24px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .tool .glyph { width: 38px; height: 38px; color: var(--violet); }
+  .tool h3 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 23px; letter-spacing: 1px; }
+  .tool p { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
+  .tool .meta { font-family: 'Fira Code', monospace; font-size: 11px; color: var(--violet); }
+  .tool .meta .quiet, .tool .meta.quiet { color: var(--muted); }
+  .tool .live { position: absolute; top: 20px; right: 20px; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .tool .soon { position: absolute; top: 16px; right: 16px; font-family: 'Fira Code', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--border); border-radius: 10px; padding: 3px 8px; background: var(--surface2); }
+  .tool.dimmed { opacity: 0.55; }
+  .tools-hook { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted); }
+  .tools-hook b { color: var(--text); font-weight: 500; }
+  .tools-hook a { color: var(--violet); text-decoration: none; }
+
+  /* ── Now building ── */
+  .now { border-top: 1px solid var(--border); background: var(--surface); }
+  .now-list { margin-top: 36px; border-top: 1px solid var(--border); }
+  .now-item { display: grid; grid-template-columns: 150px 1fr auto; gap: 20px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--border); }
+  @media (max-width: 720px) { .now-item { grid-template-columns: 1fr; gap: 4px; } }
+  .now-item .d { font-family: 'Fira Code', monospace; font-size: 11px; letter-spacing: 1px; color: var(--violet); text-transform: uppercase; }
+  .now-item .w { font-size: 15px; color: var(--text); }
+  .now-item .w span { color: var(--muted); }
+  .now-item .s { font-family: 'Fira Code', monospace; font-size: 11px; color: var(--green); }
+
+  /* ── Segmented conversion ── */
+  .paths { margin-top: 40px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
+  .path-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .path-tabs button {
+    flex: 1; background: var(--surface2); border: 0; border-right: 1px solid var(--border); padding: 16px 10px;
+    font-family: 'Fira Code', monospace; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); cursor: pointer;
+  }
+  .path-tabs button:last-child { border-right: 0; }
+  .path-tabs button.on { background: var(--surface); color: var(--violet); box-shadow: inset 0 3px 0 var(--violet); }
+  .path-body { padding: 36px 40px 40px; }
+  @media (max-width: 720px) { .path-body { padding: 24px 22px 28px; } .path-tabs button { font-size: 10px; padding: 13px 6px; letter-spacing: 0.5px; } }
+  .path-body h3 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(28px, 3.4vw, 42px); margin-bottom: 10px; }
+  .path-body p { color: var(--dim); font-size: 15px; max-width: 560px; margin-bottom: 22px; }
+
+  /* ── Colophon ── */
+  .colophon { border-top: 1px solid var(--border); }
+  .colo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 36px; align-items: start; }
+  @media (max-width: 980px) { .colo-grid { grid-template-columns: 1fr; } }
+  .colo-card { background: var(--win); border: 1px solid var(--win-border); border-radius: 12px; padding: 22px 24px; font-family: 'Fira Code', monospace; font-size: 12.5px; line-height: 2; color: #94a3b8; overflow-x: auto; }
+  .colo-card .c { color: #475569; }
+  .colo-card .k { color: #a78bfa; }
+  .colo-card .g { color: #34d399; }
+  .colo-card a { color: #a78bfa; }
+  .colo-notes { color: var(--dim); font-size: 15px; max-width: 480px; }
+  .colo-notes p + p { margin-top: 14px; }
+  .colo-notes a { color: var(--violet); }
+
+  footer { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); background: var(--surface); padding: 32px 48px; }
+  @media (max-width: 720px) { footer { padding: 28px 22px; justify-content: center; text-align: center; } }
+  footer .f-logo { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; color: var(--muted); font-size: 17px; }
+  footer .f-note { font-family: 'Fira Code', monospace; font-size: 11px; color: var(--muted); }
+  footer .f-note b { color: var(--green); font-weight: 500; }
+
+  .concept-banner {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 200;
+    background: var(--win); color: #e2e8f0; border: 1px solid var(--win-border); border-radius: 999px;
+    font-family: 'Fira Code', monospace; font-size: 11px; padding: 9px 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.25); white-space: nowrap;
+  }
+  .concept-banner b { color: #a78bfa; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">Jonathan<span>.</span>Brink</a>
+  <div class="nav-links">
+    <span class="nav-status"><span class="dot"></span><span>all systems shipping</span></span>
+    <a href="#work">Work</a>
+    <a href="#tools">Tools</a>
+    <a href="#now">Now</a>
+    <a href="#colophon">Colophon</a>
+    <a href="#contact" class="nav-cta">Get in touch</a>
+  </div>
+</nav>
+
+<!-- ── HERO: claim on the left, proof on the right ── -->
+<header class="hero wrap">
+  <div>
+    <div class="label">UX Designer &amp; Vibecoder</div>
+    <h1 style="margin-top: 22px;">
+      <span class="word">Design.</span>
+      <span class="word">Build.</span>
+      <span class="word ship">Ship.</span>
+    </h1>
+    <p class="sub">
+      Twenty-five years of product design. Now I close the gap between concept
+      and code using AI as my build partner. <strong>Products that exist</strong> —
+      and one of them is running on the right. Try it.
+    </p>
+    <div class="proof-line">→ that window is <b>not a screenshot</b></div>
+  </div>
+
+  <div class="demo" id="demo">
+    <div class="demo-bar">
+      <div class="demo-dots"><i style="background:#ff6b6b"></i><i style="background:#ffd93d"></i><i style="background:#6bcb77"></i></div>
+      <div class="demo-title">flowos — live demo · <b>●</b> ready</div>
+    </div>
+    <div class="demo-body">
+      <div class="demo-input">
+        <input id="intent" type="text" placeholder="Ask for any dataset, in plain English…" aria-label="Describe the dataset you want">
+        <button id="run">Run ↵</button>
+      </div>
+      <div class="demo-chips">
+        <button>Top customers by revenue, last quarter</button>
+        <button>Churn risk by segment</button>
+        <button>Pipeline health, EMEA</button>
+      </div>
+      <div class="demo-run" id="steps" aria-live="polite"></div>
+    </div>
+    <div class="demo-foot">
+      <span>simulated run · the real thing shipped at IBM in 14 days</span>
+      <a href="#work">read the case study →</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── TELEMETRY: velocity as design material ── -->
+<div class="telemetry">
+  <div class="tele-stats">
+    <div><div class="v" data-count="6">0</div><div class="k">products live</div></div>
+    <div><div class="v" data-count="47">0</div><div class="k">commits this week</div></div>
+    <div><div class="v" data-count="1908">0</div><div class="k">tests green</div></div>
+    <div><div class="v">14<span style="font-size:20px">d</span></div><div class="k">idea → deployed, record</div></div>
+  </div>
+  <div class="deploylog" aria-hidden="true">
+    <div class="track" id="track">
+      <span class="item"><span class="ok">✓</span> deploy · jonathanbrink.com <span class="ref">v2.0</span></span>
+      <span class="item"><span class="ok">✓</span> 696/696 tests · flowos</span>
+      <span class="item">commit · elle: phase-1 SFT eval harness</span>
+      <span class="item"><span class="ok">✓</span> uptime 99.98% · persona-library.com</span>
+      <span class="item">commit · scout: scene-graph refactor</span>
+      <span class="item"><span class="ok">✓</span> deploy · playexposed.com — 3 new packs</span>
+      <span class="item">ship rate · 6 products / 12 mo</span>
+      <span class="item"><span class="ok">✓</span> workshop cohort 04 · sold out</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── WORK: the 60-second case study ── -->
+<section class="wrap" id="work">
+  <div class="sec-head fade">
+    <div class="label">Selected Work</div>
+    <h2>Proof, in <em>sixty seconds</em>.</h2>
+    <p>Every case study opens with the version a busy VP actually reads. The depth is one click away.</p>
+  </div>
+
+  <div class="study fade">
+    <div class="study-top">
+      <div>
+        <span class="study-tag">Enterprise · AI · IBM watsonx.data</span>
+        <h3>FlowOS</h3>
+        <p>14 days to prove a design team can ship working enterprise software.
+           Typed intent to a governed dataset in under 60 seconds — the build that
+           greenlit the bigger version and pushed an MCP server into the platform.</p>
+      </div>
+      <div class="study-shot">
+        <img src="/images/work/flowos/screen-delivered-dataset.jpg" alt="FlowOS — delivered dataset view" loading="lazy">
+      </div>
+    </div>
+    <div class="sixty">
+      <div class="sixty-label">▼ The 60-second version</div>
+      <div class="sixty-grid">
+        <div class="cell"><div class="v">14</div><div class="k">days, end to end</div></div>
+        <div class="cell"><div class="v">696</div><div class="k">tests, green</div></div>
+        <div class="cell"><div class="v">&lt;60s</div><div class="k">intent → dataset</div></div>
+        <div class="cell"><div class="v">2×</div><div class="k">roadmap acceleration</div></div>
+      </div>
+      <div class="cuts">
+        <div class="cut"><b>Five primitives, not fifty.</b> Source, Entity, Intent, Flow, Dataset. Everything else: automated, hidden, or cut.</div>
+        <div class="cut"><b>PII excluded, not masked.</b> Governance at the SQL layer — compliance became structural, not behavioral.</div>
+        <div class="cut"><b>60 seconds as discipline.</b> A hard wall-clock budget. Anything that broke it got redesigned or cut.</div>
+      </div>
+      <div class="study-cta">
+        <a class="btn btn-primary" href="/work/flowos">Read the full case study →</a>
+        <span class="read-time">8 min · research, trade-offs, architecture, outcome</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOOLS: the engine ── -->
+<section class="wrap" id="tools" style="padding-top: 0;">
+  <div class="sec-head fade">
+    <div class="label">Free Tools</div>
+    <h2>Use something I <em>built</em>.</h2>
+    <p>Every tool is a live argument for the method. Each one ends with shareable output — and a question.</p>
+  </div>
+  <div class="tools-grid fade">
+    <a class="tool" href="/tools/claude-code-workshop" style="text-decoration:none; color:inherit;">
+      <span class="live"></span>
+      <svg class="glyph" viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 3 9 21h8l-2 14L29 15h-9l1-12z" stroke-linejoin="round"/></svg>
+      <h3>Claude Code Workshop</h3>
+      <p>The 11-slide interactive setup guide for a perfect Claude Code environment. Context architecture, vibecoding rules, Docker MCP.</p>
+      <div class="meta">Launch → <span class="quiet">free · no login</span></div>
+    </a>
+    <div class="tool dimmed">
+      <span class="soon">shipping next</span>
+      <svg class="glyph" viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="19" cy="13" r="6"/><path d="M7 33c0-6.6 5.4-11 12-11s12 4.4 12 11"/><circle cx="31" cy="9" r="3.4"/></svg>
+      <h3>Persona Generator</h3>
+      <p>Type a product description, get research-grade personas built from the Persona Library's 200+ community-validated profiles.</p>
+      <div class="meta quiet">In progress · powered by persona-library.com</div>
+    </div>
+    <div class="tool dimmed">
+      <span class="soon">shipping next</span>
+      <svg class="glyph" viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 32V14M15 32V6M24 32V20M33 32V11" stroke-linecap="round"/></svg>
+      <h3>UX Audit Scorecard</h3>
+      <p>Twenty questions, one structured audit. Prioritized recommendations you can take straight into your next sprint.</p>
+      <div class="meta quiet">In progress</div>
+    </div>
+  </div>
+  <div class="tools-hook fade">
+    <b>Each tool: designed, built, and shipped solo in days.</b>
+    <span>Want this capability inside your org?</span>
+    <a href="#contact">Let's talk →</a>
+  </div>
+</section>
+
+<!-- ── NOW BUILDING ── -->
+<section class="now" id="now">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <div class="label">Now Building</div>
+      <h2>The site has a <em>pulse</em>.</h2>
+      <p>What's on the bench this week — fed by the actual commit log, not a quarterly update.</p>
+    </div>
+    <div class="now-list fade">
+      <div class="now-item"><span class="d">This week</span><span class="w">Elle — Phase 2 voice auditing on the SFT checkpoint <span>· TrustOS</span></span><span class="s">in progress</span></div>
+      <div class="now-item"><span class="d">This week</span><span class="w">Persona Generator — wiring Persona Library data to the generation flow <span>· Tools</span></span><span class="s">in progress</span></div>
+      <div class="now-item"><span class="d">Last week</span><span class="w">FlowOS case study + this site's responsive rebuild <span>· jonathanbrink.com</span></span><span class="s">✓ shipped</span></div>
+      <div class="now-item"><span class="d">Jun 02</span><span class="w">Workshop cohort 04 — Optimal Path, live build session <span>· Workshops</span></span><span class="s">✓ sold out</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEGMENTED CONVERSION ── -->
+<section class="wrap" id="contact">
+  <div class="sec-head fade">
+    <div class="label">Work With Me</div>
+    <h2>What brings you <em>here</em>?</h2>
+  </div>
+  <div class="paths fade">
+    <div class="path-tabs" role="tablist">
+      <button class="on" data-path="hire" role="tab" aria-selected="true">Hire me</button>
+      <button data-path="train" role="tab" aria-selected="false">Train my team</button>
+      <button data-path="explore" role="tab" aria-selected="false">Just exploring</button>
+    </div>
+    <div class="path-body">
+      <div data-panel="hire">
+        <h3>Design leadership that ships.</h3>
+        <p>Select consulting engagements: product strategy, design org leadership, and
+           AI-assisted prototyping programs. I bring the FlowOS playbook — research to
+           deployed product, with your team learning the method as we go.</p>
+        <a class="btn btn-primary" href="/contact">Start a conversation →</a>
+      </div>
+      <div data-panel="train" hidden>
+        <h3>Make your designers builders.</h3>
+        <p>Live cohort workshops where every attendee ships a working product. The Optimal
+           Path: context architecture, vibecoding rules, and the intent-and-outcome process
+           I used to build FlowOS in 14 days.</p>
+        <a class="btn btn-primary" href="/workshops">See the workshops →</a>
+      </div>
+      <div data-panel="explore" hidden>
+        <h3>Take the tools. They're free.</h3>
+        <p>No login, no funnel tricks. Use the tools, read the case studies, steal the
+           method. If something resonates, you know where I am — and the essays go deeper
+           on the thinking.</p>
+        <a class="btn btn-primary" href="/tools">Browse the tools →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COLOPHON ── -->
+<section class="colophon wrap" id="colophon" style="padding-top: 72px;">
+  <div class="sec-head fade">
+    <div class="label">Colophon</div>
+    <h2>This site is the <em>method</em>.</h2>
+  </div>
+  <div class="colo-grid fade">
+    <div class="colo-card">
+      <span class="c"># jonathanbrink.com — built like everything else</span><br>
+      <span class="k">stack</span>&nbsp;&nbsp;&nbsp;: next.js 16 · tailwind · vercel<br>
+      <span class="k">process</span>&nbsp;: intent → outcome · ai as build partner<br>
+      <span class="k">brief</span>&nbsp;&nbsp;&nbsp;: <a href="#">read the actual CLAUDE.md →</a><br>
+      <span class="k">agents</span>&nbsp;&nbsp;: curl jonathanbrink.com/mcp <span class="c"># yes, really</span><br>
+      <span class="g">✓ vibecoded · 0 devs hired</span>
+    </div>
+    <div class="colo-notes">
+      <p>This site was designed and built the same way the products were — written
+         intent, written outcome, AI writing the how. The brief that steers it is public,
+         and an MCP endpoint lets your agents query the portfolio directly.</p>
+      <p>Radical transparency is the point: if the method works, the evidence should
+         be inspectable. <a href="/writing">The essays</a> cover the thinking behind it.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="f-logo">Jonathan Brink</span>
+  <span class="f-note"><b>✓</b> last deploy: today · uptime 99.98% · © 2026</span>
+</footer>
+
+<div class="concept-banner"><b>v2 concept</b> — redesign prototype, not the live site</div>
+
+<script>
+  // ── Scroll reveal ──
+  const io = new IntersectionObserver((es) => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { rootMargin: '0px 0px -8%' });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+  // ── Telemetry counters ──
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cio = new IntersectionObserver((es) => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = +el.dataset.count;
+    cio.unobserve(el);
+    if (reduced) { el.textContent = target.toLocaleString(); return; }
+    const t0 = performance.now(), dur = 1100;
+    (function tick(t) {
+      const p = Math.min((t - t0) / dur, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString();
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }));
+  document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+
+  // ── Deploy log: duplicate items for seamless loop (clone nodes, no HTML strings) ──
+  const track = document.getElementById('track');
+  [...track.children].forEach(n => track.appendChild(n.cloneNode(true)));
+
+  // ── The demo (all dynamic content built with createElement/textContent — no innerHTML) ──
+  const stepsEl = document.getElementById('steps');
+  const input = document.getElementById('intent');
+  const runBtn = document.getElementById('run');
+  let running = false;
+
+  const PLAN = [
+    { agent: 'listener',     text: i => `heard: "${i}" — reframed for review`, ms: 850 },
+    { agent: 'coordinator',  text: () => 'deterministic plan · 6 tasks · <1ms', ms: 300 },
+    { agent: 'parallel ×3',  text: () => 'data resolver · policy checker · schema monitor', ms: 1100 },
+    { agent: 'flow builder', text: () => 'pipeline generated · PII excluded at the SQL layer', ms: 1200 },
+    { agent: 'quality',      text: () => 'output validated · 12/12 checks', ms: 700 },
+  ];
+
+  function el(tag, className, text) {
+    const n = document.createElement(tag);
+    if (className) n.className = className;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+
+  function addStep(s, intent) {
+    const row = el('div', 'step');
+    const ico = el('span', 'ico spin', '◌');
+    const body = el('span', 'body');
+    body.appendChild(el('span', 'agent', s.agent));
+    body.appendChild(el('span', 'quiet', ' · '));
+    body.appendChild(document.createTextNode(s.text(intent)));
+    const time = el('span', 't', '');
+    row.append(ico, body, time);
+    stepsEl.appendChild(row);
+    requestAnimationFrame(() => row.classList.add('on'));
+    return row;
+  }
+
+  async function run(intentText) {
+    if (running) return;
+    running = true; runBtn.disabled = true;
+    stepsEl.replaceChildren();
+    const intent = (intentText || input.value.trim() || 'Top customers by revenue, last quarter').slice(0, 80);
+    input.value = intent;
+    const t0 = performance.now();
+    for (const s of PLAN) {
+      const row = addStep(s, intent);
+      await new Promise(r => setTimeout(r, reduced ? 60 : s.ms));
+      row.classList.add('done');
+      const ico = row.querySelector('.ico');
+      ico.classList.remove('spin');
+      ico.textContent = '✓';
+      row.querySelector('.t').textContent = ((performance.now() - t0) / 1000).toFixed(1) + 's';
+    }
+    const total = ((performance.now() - t0) / 1000).toFixed(1);
+    const res = el('div', 'result');
+    const rt = el('div', 'rt');
+    rt.append(el('b', null, 'Your dataset is ready'), el('span', null, `✓ ${total}s · healthy`));
+    res.append(
+      rt,
+      el('div', 'rm', '198 rows · 3 columns · account_id, balance, customer_status'),
+      el('div', 'pol', '⚠ 2 sensitive fields excluded by policy for your protection'),
+    );
+    stepsEl.appendChild(res);
+    requestAnimationFrame(() => res.classList.add('on'));
+    running = false; runBtn.disabled = false;
+  }
+
+  runBtn.addEventListener('click', () => run());
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+  document.querySelectorAll('.demo-chips button').forEach(b =>
+    b.addEventListener('click', () => run(b.textContent)));
+
+  // Auto-run once so the proof is moving before anyone touches it
+  setTimeout(() => run('Top customers by revenue, last quarter'), reduced ? 0 : 900);
+
+  // ── Conversion paths ──
+  const tabs = document.querySelectorAll('.path-tabs button');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => { x.classList.toggle('on', x === t); x.setAttribute('aria-selected', String(x === t)); });
+    document.querySelectorAll('[data-panel]').forEach(p =>
+      p.hidden = p.dataset.panel !== t.dataset.path);
+  }));
+</script>
+</body>
+</html>

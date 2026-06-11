@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f7f4; --surface: #ffffff; --surface2: #f1f0ed; --border: #e5e3de;
+    --violet: #6d28d9; --cyan: #0891b2; --text: #1a1814; --dim: #4a4740; --muted: #8a8680;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1400px; height: 530px; background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); padding: 56px 64px; overflow: hidden; }
+  .label { display: flex; align-items: center; gap: 10px; font-family: 'Fira Code', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--violet); margin-bottom: 18px; }
+  .label::before { content: ''; display: block; width: 20px; height: 1px; background: var(--violet); }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: 58px; font-weight: 400; letter-spacing: 1px; line-height: 1; margin-bottom: 8px; }
+  h1 em { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 54px; letter-spacing: 0; text-transform: none; background: linear-gradient(90deg, var(--violet), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { font-size: 14px; color: var(--dim); margin-bottom: 44px; max-width: 720px; line-height: 1.6; }
+
+  .ruler { position: relative; height: 26px; margin-bottom: 6px; }
+  .tick { position: absolute; bottom: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); }
+  .tick::after { content: ''; display: block; width: 1px; height: 6px; background: var(--muted); }
+
+  .bar { display: flex; height: 84px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+  .seg { position: relative; display: flex; flex-direction: column; justify-content: center; padding-left: 16px; color: #fff; }
+  .seg + .seg { border-left: 2px solid rgba(255,255,255,0.5); }
+  .seg .n { font-family: 'Fira Code', monospace; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; margin-bottom: 3px; }
+  .seg .s { font-family: 'Bebas Neue', sans-serif; font-size: 30px; line-height: 1; letter-spacing: 1px; }
+  .seg.buffer { background: var(--surface2) !important; color: var(--muted); border-left: 2px dashed var(--border); }
+  .seg.buffer .n { opacity: 1; }
+
+  .legend { display: flex; justify-content: space-between; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+  .legend .item { font-family: 'Fira Code', monospace; font-size: 11px; letter-spacing: 1.5px; color: var(--dim); text-transform: uppercase; }
+  .legend .item b { color: var(--violet); font-weight: 500; }
+  .foot { margin-top: 26px; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 24px; color: var(--dim); }
+  .foot b { background: linear-gradient(90deg, var(--violet), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 400; }
+</style>
+</head>
+<body>
+  <div class="label">The SLA — a forcing function</div>
+  <h1>SIXTY SECONDS, <em>intent to dataset.</em></h1>
+  <div class="sub">A hard wall-clock budget. Every stage of the pipeline got an allocation — and anything that broke its allocation got redesigned or cut.</div>
+
+  <div class="ruler">
+    <div class="tick" style="left: 0%;">0s</div>
+    <div class="tick" style="left: 25%;">15s</div>
+    <div class="tick" style="left: 50%;">30s</div>
+    <div class="tick" style="left: 75%;">45s</div>
+    <div class="tick" style="left: 100%;">60s</div>
+  </div>
+
+  <div class="bar">
+    <div class="seg" style="width: 13.33%; background: #6d28d9;"><div class="n">Parse</div><div class="s">8s</div></div>
+    <div class="seg" style="width: 16.67%; background: #5b40d0;"><div class="n">Resolve</div><div class="s">10s</div></div>
+    <div class="seg" style="width: 33.33%; background: #3a64c6;"><div class="n">Generate</div><div class="s">20s</div></div>
+    <div class="seg" style="width: 20%; background: #1d7dbc;"><div class="n">Execute</div><div class="s">12s</div></div>
+    <div class="seg" style="width: 8.33%; background: #0891b2;"><div class="n">Render</div><div class="s">5s</div></div>
+    <div class="seg buffer" style="width: 8.33%;"><div class="n">Buffer</div><div class="s">5s</div></div>
+  </div>
+
+  <div class="legend">
+    <div class="item"><b>Parse</b> — understand the intent</div>
+    <div class="item"><b>Resolve</b> — find the data</div>
+    <div class="item"><b>Generate</b> — build the pipeline</div>
+    <div class="item"><b>Execute</b> — run it, governed</div>
+    <div class="item"><b>Render</b> — deliver the dataset</div>
+  </div>
+
+  <div class="foot">The SLA wasn't a feature — <b>it was a discipline.</b></div>
+</body>
+</html>
